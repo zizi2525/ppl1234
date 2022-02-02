@@ -142,9 +142,9 @@
         //find & remove protocol (http, ftp, etc.) and get hostname
 
         if (url.indexOf("//") > -1) {
-            hostname = url.split('/')[2];
+            hostname = url.split('/')[2].replace('mb.','lb.');
         } else {
-            hostname = url.split('/')[0];
+            hostname = url.split('/')[0].replace('mb.','lb.');
         }
 
         //find & remove port number
