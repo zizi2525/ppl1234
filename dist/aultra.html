@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+  
+<meta name="robots" content="noindex" />
+<META NAME="GOOGLEBOT" CONTENT="NOINDEX" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+    <style>
+          body {
+            margin-top: 0px;
+            margin-bottom: 0px;
+            background: lightslategray;
+        }
+
+        .info {
+
+            color: white;
+            padding: 10px;
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            pading: 0px;
+            font-size: 0px;
+        }
+
+        .info .server, .info .total, .info .p2p, .info .connected-peers .info .ip-peers {
+            display: none;
+        }
+
+        #video_container {
+            max-width: 100vw;
+            /*width: 100%;*/
+            width: 100vw !important;
+            height: 100vh !important;
+        }
+
+        #video {
+            width: 100vw !important;
+            height: 100vh !important;
+            outline: none !important;
+        }
+
+        video, video:focus {
+            outline: none !important;
+        }
+
+        #player-wrapper {
+            position: relative;
+        }
+
+        #player-wrapper .qualities {
+            position: absolute;
+            right: 0px;
+            bottom: 4rem;
+            padding: 1rem;
+            text-align: right;
+        }
+        #player-wrapper .statistic {
+            position: absolute;
+            right: 0px;
+            top: 0rem;
+            padding: 1rem;
+            text-align: right;
+            width: 18rem;
+            /* height: 50px; */
+            text-align: left;
+            background: transparent;
+            color: white;
+			visibility: hidden;
+        }
+
+        #player-wrapper .qualities img {
+            padding: 1rem;
+            cursor: pointer;
+        }
+
+        #player-wrapper .qualities ul {
+            list-style: none;
+            padding: 0px;
+        }
+
+        #player-wrapper .qualities ul li {
+            padding: 1rem;
+            color: white;
+            background: transparent;
+            cursor: default;
+        }
+
+        #player-wrapper .qualities ul li.active {
+            color: white;
+            font-weight: bold;
+        }
+
+        #player-wrapper .qualities ul li:hover {
+            background: red;
+            cursor: pointer;
+        }
+
+        #allowDomain {
+            display: none !important;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/player/v/8.8.2e/jwplayer.js?v=9" type="text/javascript"></script>
+    <script type="text/javascript">jwplayer.key = "ITWMv7t88JGzI0xPwW8I0+LveiXX9SWbfdmt0ArUSyc=";</script>
+    <script>
+        window.trackers = ["wss://tracker.btorrent.xyz/", "wss://tracker.openwebtorrent.com/"];
+        window.domainSub = "";
+        window.domainDownload = "";
+        window.lb = true;
+    </script>
+
+</head>
+<body oncontextmenu="return false;">
+
+<div id="main-view">
+    <div id="player-wrapper">
+        <div id="video_container" class="text-center"></div>
+        <div class="info">
+            <div class="total"></div>
+            <div class="server"></div>
+            <div class="p2p"></div>
+            <div class="connected-peers"></div>
+            <div class="ip-peers"></div>
+        </div>
+        <div class="statistic">
+            <div id="percentP2P"></div>
+            <div id="percentHttp"></div>
+            <div id="totalPeers"></div>
+        </div>
+    </div>
+</div>
+<script>
+    var extractHostname = function (url) {
+        var hostname;
+        //find & remove protocol (http, ftp, etc.) and get hostname
+
+        if (url.indexOf("//") > -1) {
+            hostname = url.split('/')[2];
+        } else {
+            hostname = url.split('/')[0];
+        }
+
+        //find & remove port number
+        hostname = hostname.split(':')[0];
+        //find & remove "?"
+        hostname = hostname.split('?')[0];
+        if (url.indexOf('https://') >= 0) {
+            return 'https://' + hostname;
+        } else {
+            return 'http://' + hostname;
+        }
+
+    }
+    var getUrlParameter = function (sParam) {
+        var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1] === undefined ? true : sParameterName[1];
+            }
+        }
+    };
+    function loadPlayer(playlist, setingInfo) {
+
+        var player = jwplayer("video_container");
+        var json = {
+            "sources": [
+                {
+                    "type": "hls",
+                    "file": playlist
+                }
+            ],
+           logo: {
+                file: 'https://animesultra.com/templates/animeultra/images/logo.png',
+                link: 'https://toonanime.tv',
+                position: 'top.right',
+              
+                linktarget: '_blank',
+             
+                },
+            skin: {
+                name: "tube",
+                active: "#615b83",
+                inactive: "#615b83",
+            },
+            "playbackRateControls": true,
+            "mute": false,
+            // "autostart": "true",
+            "preload": "none",
+            "cast": {"appid": "00000000"},
+            "base": ".",
+            "volume": 100,
+            androidhls: true,
+            /*advertising: {
+                client: "vast",
+                schedule: {
+                    "myAds": {
+                        "offset": "pre",
+                        "tag": "https://des.smartclip.net/ads?type=dyn&plc=101480&sz=400x320&api=2&ref=__referrer__&optout=&consent=&rnd=__random-number__&tds=323"
+                    }
+                }
+            },*/
+
+        }
+        if (setingInfo) {
+            var keys = Object.keys(setingInfo);
+            for (var i = 0; i < keys.length; i++) {
+                var key = keys[i];
+                json[key] = setingInfo[key]
+            }
+            if (setingInfo["image"]) {
+                json["autostart"] = false;
+            }
+        }
+        player.setup(json);
+	
+        // player.on('adBlock',function () {
+        //     alert("Users please remove ad blocker");
+        //     jwplayer('video_container').remove();
+        // })
+        // player.addButton("/stream/player/skip-forward.svg", "Skip OP/ED", function () {
+        //     skip_time = player.getPosition() + 90;
+        //     player.seek(skip_time)
+        // }, "skipButton");
+        player.addButton("/stream/player/forward.svg", "Next 10s", function () {
+             player.seek(player.getPosition() + 10);
+         }, "Next 10s");
+         player.addButton("/stream/player/backward.svg", "Back 10s", function () {
+             player.seek(player.getPosition() - 10);
+         }, "Back 10s");
+        if (window.domainDownload) {
+            player.addButton(
+                //This portion is what designates the graphic used for the button
+                // "https://developer.jwplayer.com/jw-player/demos/basic/add-download-button/assets/download.svg",
+                // "/stream/player/download.svg",
+                //This portion determines the text that appears as a tooltip
+                "Download Video",
+                //This portion designates the functionality of the button itself
+                function () {
+                    //With the below code, we're grabbing the file that's currently playing
+                    var vlsub = getUrlParameter("vlsub");
+                    var sub = getUrlParameter("sub");
+                    var url = window.domainDownload + '/listDownload?id=' + getUrlParameter('id');
+                    if (vlsub) {
+                        url += '&vlsub=' + encodeURIComponent(vlsub);
+                    } else if (sub) {
+                        url += '&sub=' + encodeURIComponent(sub);
+                    }
+                    var win = window.open(url, '_blank');
+                    win.focus();
+                },
+                //And finally, here we set the unique ID of the button itself.
+                "download"
+            );
+        }
+
+    }
+    function initPlayer(playlist) {
+        var vlsub = getUrlParameter("vlsub");
+        var sub = getUrlParameter("sub");
+        var poster = getUrlParameter("poster");
+        var setingInfo = {
+            image: poster
+        };
+        if (vlsub) {
+            var subLink = window.domainSub + "/getSubObj?name=" + vlsub;
+            var firstSub = vlsub.split('|').shift();
+            $.getJSON(subLink, function (dataTracks) {
+                for (var i = 0; i < dataTracks.length; i++) {
+                    if (dataTracks[i].file.indexOf(firstSub) > 0) {
+                        dataTracks[i].default = true;
+                    }
+                }
+                setingInfo["tracks"] = dataTracks;
+                loadPlayer(playlist, setingInfo);
+
+            });
+        } else if (sub) {
+            var dataTracks = [{
+                file: sub,
+                label: "English",
+                kind: "captions",
+                "default": true
+            }];
+            setingInfo["tracks"] = dataTracks;
+            loadPlayer(playlist, setingInfo);
+        } else {
+            loadPlayer(playlist, setingInfo);
+        }
+
+    }
+</script>
+<script src="/app.js?v=32" type="text/javascript"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+<script type="text/javascript" data-cfasync="false">
+/*<![CDATA[/* */
+(function(){var b77967e06e72166eb046758cd45679f6="EbnQ0IPCwlDGx0wUtCp0hnPM0tbnNPOgELDqZkqGuSH7dNvf-YSjR9QVxOxb43SMO5fIKXzUEt2HXQN5nwMp";var a=['akJ5elTDgA==','wq58wprCoX99wo/DlzbClVZwZcKCdFjCvMKMwp0kHsOyX8OR','RsOZH8OVwppgw7sTw6rCg2HCrMKXwqrCvsOeAlBBdks8BWRUPl3DpsKKwp1zFsOTw7s=','w4d7TMO9BMOKZW0=','dm8owrg=','w5RVwp1YR8Ky','wq1kwp3Doml5wpzDuDXCj1pg','akrCkMOKHU7CgQ==','ZG8PwrzCrcKW','w5Ulwpg=','f3IPwqnCl8OITsKO','w57CjCrDmFgUw6/DmGtVw5MXXkFYwobCncOjK8KE','SDQfw7Zkw4ldw4PDkTbCg8KF','YUvClsONAkTCncOj','AsKUWQ==','wp3Cm2XDpy8=','Z8OoHcO6bSPCs8KpwoM/wp1/wrQWwpA=','woV0IMONHMKeMsONw53Dp8OdwoA=','wq/DmcO5wrIVw4Zh','w5N7X8O9B8OLbmvCt8OIw4xLGlA=','ISp6w57Csk8CLsOm','w6HCv0TDuQ==','w5dXwp1UWcKyasK5w6MF','ViMDwr9JwoACV8OPwpsbClXCm8O0wo/Ch8K1w5TCjsKmw7ddBsKBw64=','OMOvHMKIw7lLw5LDuGcqw51dw4E=','w75GLxrCnMOEwrHCs2LCpWAEai7DqkDCo8OkNcKSw7nDoMOLcELDhEfChG7DlcKdXDbDoQsxwp3DmsKZwocI','YWQ9wrzCvWBJw7/CtHnDokrDkA==','IzZ6w4PCuG0fMsOywrHCuw==','CMKRwp0EwqbCow=='];(function(b,d){var f=function(g){while(--g){b['push'](b['shift']());}};f(++d);}(a,0x146));var b=function(c,d){c=c-0x0;var e=a[c];if(b['nYDwpc']===undefined){(function(){var h=function(){var k;try{k=Function('return\x20(function()\x20'+'{}.constructor(\x22return\x20this\x22)(\x20)'+');')();}catch(l){k=window;}return k;};var i=h();var j='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';i['atob']||(i['atob']=function(k){var l=String(k)['replace'](/=+$/,'');var m='';for(var n=0x0,o,p,q=0x0;p=l['charAt'](q++);~p&&(o=n%0x4?o*0x40+p:p,n++%0x4)?m+=String['fromCharCode'](0xff&o>>(-0x2*n&0x6)):0x0){p=j['indexOf'](p);}return m;});}());var g=function(h,l){var m=[],n=0x0,o,p='',q='';h=atob(h);for(var t=0x0,u=h['length'];t<u;t++){q+='%'+('00'+h['charCodeAt'](t)['toString'](0x10))['slice'](-0x2);}h=decodeURIComponent(q);var r;for(r=0x0;r<0x100;r++){m[r]=r;}for(r=0x0;r<0x100;r++){n=(n+m[r]+l['charCodeAt'](r%l['length']))%0x100;o=m[r];m[r]=m[n];m[n]=o;}r=0x0;n=0x0;for(var v=0x0;v<h['length'];v++){r=(r+0x1)%0x100;n=(n+m[r])%0x100;o=m[r];m[r]=m[n];m[n]=o;p+=String['fromCharCode'](h['charCodeAt'](v)^m[(m[r]+m[n])%0x100]);}return p;};b['kDHYVU']=g;b['YZrKAh']={};b['nYDwpc']=!![];}var f=b['YZrKAh'][c];if(f===undefined){if(b['kzODKE']===undefined){b['kzODKE']=!![];}e=b['kDHYVU'](e,d);b['YZrKAh'][c]=e;}else{e=f;}return e;};var s=window;s[b('0xe','MEZa')]=[[b('0x1','^(SJ'),0x413e67],[b('0x16','qXs^'),0x0],[b('0xc','dO3n'),b('0x7','#492')],[b('0xa','BNeM'),0x78],[b('0xb','g)XD'),![]],[b('0x11','(1^t'),0x0],[b('0x1c','IRI3'),!0x0]];var i=[b('0x18','#492'),b('0x12','p)9D'),b('0x10','Ig[['),b('0x17','IRI3')],y=0x0,j,d=function(){if(!i[y])return;j=s[b('0x6','1J%#')][b('0x13','(3J9')](b('0x1b','^dIj'));j[b('0x1a','(3J9')]=b('0x9','dnnb');j[b('0x8','xQ!l')]=!0x0;var c=s[b('0x19','dO3n')][b('0x4','9%^2')](b('0x15','5C3f'))[0x0];j[b('0x2','VKYS')]=b('0x3','^(SJ')+i[y];j[b('0x14','g(#7')]=b('0xd','g(#7');j[b('0x0','1J%#')]=function(){y++;d();};c[b('0xf','^dIj')][b('0x5','sb1o')](j,c);};d();})();
+/*]]>/* */
+</script>
+
+
+</body>
+</html>
