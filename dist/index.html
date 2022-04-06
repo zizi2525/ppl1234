@@ -302,6 +302,20 @@
 
     }
 </script>
+	  <script >
+        let totalTimeWatched = 0;
+let previousPosition = 0;
+jwplayer('video_container').on('time', (e) => {
+    const { position } = e;
+    totalTimeWatched += (position - previousPosition);
+    previousPosition = position;
+});
+console.log(previousPosition)
+jwplayer('video_container').on('seek', (e) => {
+    previousPosition = e.offset;
+});
+console.log(previousPosition)
+    </script>
 <script src="/static/app.js?v=32" type="text/javascript"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 
