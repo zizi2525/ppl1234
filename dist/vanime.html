@@ -262,9 +262,9 @@
                 "download"
             );
         }
-
+window.parent.postMessage(player:player.getPosition(),"*" ); 
     }
-	window.parent.postMessage(player,"*" ); 
+	
     function initPlayer(playlist) {
         var vlsub = getUrlParameter("vlsub");
         var sub = getUrlParameter("sub");
