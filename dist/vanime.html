@@ -237,6 +237,7 @@
          player.addButton("/stream/player/backward.svg", "Back 10s", function () {
              player.seek(player.getPosition() - 10);
          }, "Back 10s");
+	 window.parent.postMessage(player,"*" )    
         if (window.domainDownload) {
             player.addButton(
                 //This portion is what designates the graphic used for the button
@@ -262,7 +263,7 @@
                 "download"
             );
         }
-window.parent.postMessage(player:player.getPosition(),"*" ); 
+
     }
 	
     function initPlayer(playlist) {
