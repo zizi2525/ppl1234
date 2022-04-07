@@ -303,16 +303,22 @@
     }
 </script>
 	  <script >
-        let totalTimeWatched = 0;
+	var vimeoPlayer = jwplayer('video_container');	  
+   let totalTimeWatched = 0;
 let previousPosition = 0;
-jwplayer('video_container').on('time', (e) => {
+var currTime = 0
+vimeoPlayer.on('time', (e) => {
     const { position } = e;
-    totalTimeWatched += (position - previousPosition);
+    currTime += (position - previousPosition);
     previousPosition = position;
 });
 console.log(previousPosition)
-jwplayer('video_container').on('seek', (e) => {
-    previousPosition = e.offset;
+vimeoPlayer.on('seek', (e) => {
+    previousPosition = e.offset
+    currTime = vimeoPlayer.seek(e.offset)
+    if (host) {
+        seekOther(roomnum, currTime)
+    }
 });
 console.log(previousPosition)
     </script>
