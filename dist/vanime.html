@@ -237,7 +237,9 @@
          player.addButton("/stream/player/backward.svg", "Back 10s", function () {
              player.seek(player.getPosition() - 10);
          }, "Back 10s");
-	    
+	 var state = player.getState();
+         var elapsed = player.getPosition();   
+	 window.parent.postMessage({v1: elapsed, v2: state}, "*");
         if (window.domainDownload) {
             player.addButton(
                 //This portion is what designates the graphic used for the button
