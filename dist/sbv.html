@@ -10,7 +10,7 @@
         <div id="myElement"></div><script type="text/javascript">
             let params = (new URL(document.location)).searchParams;
       let name = params.get("id");
-      fetch('http://192.168.1.30:3030/sib/'+name, { 
+      fetch('http://31.207.46.58:5051/sib/'+name, { 
   method: 'GET'
 })
 .then(function(response) { return response.json(); })
