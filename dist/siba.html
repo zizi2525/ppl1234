@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+  
+<meta name="robots" content="noindex" />
+<META NAME="GOOGLEBOT" CONTENT="NOINDEX" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+    <style>
+          body {
+            margin-top: 0px;
+            margin-bottom: 0px;
+            background: lightslategray;
+        }
+
+        .info {
+
+            color: white;
+            padding: 10px;
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            pading: 0px;
+            font-size: 0px;
+        }
+
+        .info .server, .info .total, .info .p2p, .info .connected-peers .info .ip-peers {
+            display: none;
+        }
+
+        #video_container {
+            max-width: 100vw;
+            /*width: 100%;*/
+            width: 100vw !important;
+            height: 100vh !important;
+        }
+
+        #video {
+            width: 100vw !important;
+            height: 100vh !important;
+            outline: none !important;
+        }
+
+        video, video:focus {
+            outline: none !important;
+        }
+
+        #player-wrapper {
+            position: relative;
+        }
+
+        #player-wrapper .qualities {
+            position: absolute;
+            right: 0px;
+            bottom: 4rem;
+            padding: 1rem;
+            text-align: right;
+        }
+        #player-wrapper .statistic {
+            position: absolute;
+            right: 0px;
+            top: 0rem;
+            padding: 1rem;
+            text-align: right;
+            width: 18rem;
+            /* height: 50px; */
+            text-align: left;
+            background: transparent;
+            color: white;
+			visibility: hidden;
+        }
+
+        #player-wrapper .qualities img {
+            padding: 1rem;
+            cursor: pointer;
+        }
+
+        #player-wrapper .qualities ul {
+            list-style: none;
+            padding: 0px;
+        }
+
+        #player-wrapper .qualities ul li {
+            padding: 1rem;
+            color: white;
+            background: transparent;
+            cursor: default;
+        }
+
+        #player-wrapper .qualities ul li.active {
+            color: white;
+            font-weight: bold;
+        }
+
+        #player-wrapper .qualities ul li:hover {
+            background: red;
+            cursor: pointer;
+        }
+
+        #allowDomain {
+            display: none !important;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://mb.toonanime.xyz/static/player/v/8.8.2e/jwplayer.js?v=9" type="text/javascript"></script>
+    <script type="text/javascript">jwplayer.key = "ITWMv7t88JGzI0xPwW8I0+LveiXX9SWbfdmt0ArUSyc=";</script>
+
+
+</head>
+<body oncontextmenu="return false;">
+
+<div id="main-view">
+    <div id="player-wrapper">
+        <div id="video_container" class="text-center"></div>
+        <div class="info">
+            <div class="total"></div>
+            <div class="server"></div>
+            <div class="p2p"></div>
+            <div class="connected-peers"></div>
+            <div class="ip-peers"></div>
+        </div>
+        <div class="statistic">
+            <div id="percentP2P"></div>
+            <div id="percentHttp"></div>
+            <div id="totalPeers"></div>
+        </div>
+    </div>
+</div>
+<script>
+ const _0x40ec3b=_0x4d42;function _0x5553(){const _0x1d5e52=['length','#ffff','353330sudWjU','toString','then','table','https://animesultra.com','exception','trace','4015124hnjTov','log','info','console','{}.constructor(\x22return\x20this\x22)(\x20)','8tdYxsm','constructor','bind','top.right','1089188bWLmDq','3gaUYsu','video_container','6729540CYcBjS','2870805yEBmlu','location','_blank','apply','7438585rnLWMV','get','warn','27857CrbwTC','setup','https://animesultra.com/templates/animeultra/images/logo.png','aHR0cHM6Ly9sYi50b29uYW5pbWUueHl6L3NpYi8','639TigpkD'];_0x5553=function(){return _0x1d5e52;};return _0x5553();}function _0x4d42(_0x143743,_0x3aad0c){const _0x20ae9f=_0x5553();return _0x4d42=function(_0x36fa98,_0x5a3c33){_0x36fa98=_0x36fa98-0x150;let _0x321587=_0x20ae9f[_0x36fa98];return _0x321587;},_0x4d42(_0x143743,_0x3aad0c);}(function(_0x428f6d,_0x21e210){const _0x2463bb=_0x4d42,_0x386964=_0x428f6d();while(!![]){try{const _0x46297b=parseInt(_0x2463bb(0x15a))/0x1+-parseInt(_0x2463bb(0x171))/0x2+parseInt(_0x2463bb(0x150))/0x3*(parseInt(_0x2463bb(0x168))/0x4)+parseInt(_0x2463bb(0x153))/0x5+parseInt(_0x2463bb(0x152))/0x6+parseInt(_0x2463bb(0x157))/0x7*(parseInt(_0x2463bb(0x16d))/0x8)+-parseInt(_0x2463bb(0x15e))/0x9*(parseInt(_0x2463bb(0x161))/0xa);if(_0x46297b===_0x21e210)break;else _0x386964['push'](_0x386964['shift']());}catch(_0x2b4d35){_0x386964['push'](_0x386964['shift']());}}}(_0x5553,0xb3e27));const _0x5a3c33=(function(){let _0x520323=!![];return function(_0x5d1c12,_0x3df63b){const _0x2b1258=_0x520323?function(){const _0xec74a8=_0x4d42;if(_0x3df63b){const _0x3607f5=_0x3df63b[_0xec74a8(0x156)](_0x5d1c12,arguments);return _0x3df63b=null,_0x3607f5;}}:function(){};return _0x520323=![],_0x2b1258;};}()),_0x36fa98=_0x5a3c33(this,function(){const _0x533b24=_0x4d42,_0x50f658=function(){const _0x5d8c2a=_0x4d42;let _0x1f4cbd;try{_0x1f4cbd=Function('return\x20(function()\x20'+_0x5d8c2a(0x16c)+');')();}catch(_0x5d0fbd){_0x1f4cbd=window;}return _0x1f4cbd;},_0x5363f3=_0x50f658(),_0x14b7a8=_0x5363f3[_0x533b24(0x16b)]=_0x5363f3[_0x533b24(0x16b)]||{},_0x199ed9=[_0x533b24(0x169),_0x533b24(0x159),_0x533b24(0x16a),'error',_0x533b24(0x166),_0x533b24(0x164),_0x533b24(0x167)];for(let _0x22735b=0x0;_0x22735b<_0x199ed9[_0x533b24(0x15f)];_0x22735b++){const _0x563c0f=_0x5a3c33[_0x533b24(0x16e)]['prototype'][_0x533b24(0x16f)](_0x5a3c33),_0x239f03=_0x199ed9[_0x22735b],_0x5cb65c=_0x14b7a8[_0x239f03]||_0x563c0f;_0x563c0f['__proto__']=_0x5a3c33[_0x533b24(0x16f)](_0x5a3c33),_0x563c0f[_0x533b24(0x162)]=_0x5cb65c[_0x533b24(0x162)][_0x533b24(0x16f)](_0x5cb65c),_0x14b7a8[_0x239f03]=_0x563c0f;}});_0x36fa98();let params=new URL(document[_0x40ec3b(0x154)])['searchParams'],name=params[_0x40ec3b(0x158)]('id');var player=jwplayer(_0x40ec3b(0x151)),sr1=atob(_0x40ec3b(0x15d));fetch(sr1+name,{'method':'GET'})['then'](function(_0x2777c0){return _0x2777c0['json']();})[_0x40ec3b(0x163)](function(_0x265485){const _0x3bfd09=_0x40ec3b;console[_0x3bfd09(0x169)](_0x265485['id']),player[_0x3bfd09(0x15b)]({'playlist':[{'sources':[{'file':_0x265485['id']}]}],'skin':{'name':'tube','active':_0x3bfd09(0x160),'inactive':_0x3bfd09(0x160)},'logo':{'file':_0x3bfd09(0x15c),'link':_0x3bfd09(0x165),'position':_0x3bfd09(0x170),'linktarget':_0x3bfd09(0x155)}});});
+        
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+
+</body>
+</html>
