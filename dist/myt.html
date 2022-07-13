@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+  
+<meta name="robots" content="noindex" />
+<META NAME="GOOGLEBOT" CONTENT="NOINDEX" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+    <style>
+          body {
+            margin-top: 0px;
+            margin-bottom: 0px;
+            background: lightslategray;
+        }
+
+        .info {
+
+            color: white;
+            padding: 10px;
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            pading: 0px;
+            font-size: 0px;
+        }
+
+        .info .server, .info .total, .info .p2p, .info .connected-peers .info .ip-peers {
+            display: none;
+        }
+
+        #video_container {
+            max-width: 100vw;
+            /*width: 100%;*/
+            width: 100vw !important;
+            height: 100vh !important;
+        }
+
+        #video {
+            width: 100vw !important;
+            height: 100vh !important;
+            outline: none !important;
+        }
+
+        video, video:focus {
+            outline: none !important;
+        }
+
+        #player-wrapper {
+            position: relative;
+        }
+
+        #player-wrapper .qualities {
+            position: absolute;
+            right: 0px;
+            bottom: 4rem;
+            padding: 1rem;
+            text-align: right;
+        }
+        #player-wrapper .statistic {
+            position: absolute;
+            right: 0px;
+            top: 0rem;
+            padding: 1rem;
+            text-align: right;
+            width: 18rem;
+            /* height: 50px; */
+            text-align: left;
+            background: transparent;
+            color: white;
+			visibility: hidden;
+        }
+
+        #player-wrapper .qualities img {
+            padding: 1rem;
+            cursor: pointer;
+        }
+
+        #player-wrapper .qualities ul {
+            list-style: none;
+            padding: 0px;
+        }
+
+        #player-wrapper .qualities ul li {
+            padding: 1rem;
+            color: white;
+            background: transparent;
+            cursor: default;
+        }
+
+        #player-wrapper .qualities ul li.active {
+            color: white;
+            font-weight: bold;
+        }
+
+        #player-wrapper .qualities ul li:hover {
+            background: red;
+            cursor: pointer;
+        }
+
+        #allowDomain {
+            display: none !important;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://mb.toonanime.xyz/static/player/v/8.8.2e/jwplayer.js?v=9" type="text/javascript"></script>
+    <script type="text/javascript">jwplayer.key = "ITWMv7t88JGzI0xPwW8I0+LveiXX9SWbfdmt0ArUSyc=";</script>
+
+
+</head>
+<body oncontextmenu="return false;">
+
+<div id="main-view">
+    <div id="player-wrapper">
+        <div id="video_container" class="text-center"></div>
+        <div class="info">
+            <div class="total"></div>
+            <div class="server"></div>
+            <div class="p2p"></div>
+            <div class="connected-peers"></div>
+            <div class="ip-peers"></div>
+        </div>
+        <div class="statistic">
+            <div id="percentP2P"></div>
+            <div id="percentHttp"></div>
+            <div id="totalPeers"></div>
+        </div>
+    </div>
+</div>
+<script>
+ const _0x2f5e1a=_0x999d;function _0x999d(_0x30222d,_0x4fc2f9){const _0x351d31=_0x5b25();return _0x999d=function(_0x3f6e8f,_0x1ad54b){_0x3f6e8f=_0x3f6e8f-0x16c;let _0x244d67=_0x351d31[_0x3f6e8f];return _0x244d67;},_0x999d(_0x30222d,_0x4fc2f9);}(function(_0x28e9d5,_0x5492bb){const _0x3d29f5=_0x999d,_0x2ff36b=_0x28e9d5();while(!![]){try{const _0x5d229c=parseInt(_0x3d29f5(0x176))/0x1*(-parseInt(_0x3d29f5(0x18c))/0x2)+parseInt(_0x3d29f5(0x18f))/0x3+parseInt(_0x3d29f5(0x188))/0x4*(parseInt(_0x3d29f5(0x181))/0x5)+-parseInt(_0x3d29f5(0x18a))/0x6*(parseInt(_0x3d29f5(0x18b))/0x7)+-parseInt(_0x3d29f5(0x186))/0x8+-parseInt(_0x3d29f5(0x177))/0x9*(parseInt(_0x3d29f5(0x183))/0xa)+parseInt(_0x3d29f5(0x184))/0xb;if(_0x5d229c===_0x5492bb)break;else _0x2ff36b['push'](_0x2ff36b['shift']());}catch(_0x53bcb2){_0x2ff36b['push'](_0x2ff36b['shift']());}}}(_0x5b25,0xd4563));const _0x1ad54b=(function(){let _0x5ebac1=!![];return function(_0x4c305d,_0xce7516){const _0x12c5b1=_0x5ebac1?function(){const _0x4a490c=_0x999d;if(_0xce7516){const _0x54f4d4=_0xce7516[_0x4a490c(0x17b)](_0x4c305d,arguments);return _0xce7516=null,_0x54f4d4;}}:function(){};return _0x5ebac1=![],_0x12c5b1;};}()),_0x3f6e8f=_0x1ad54b(this,function(){const _0x47d389=_0x999d;let _0x540618;try{const _0x3c51aa=Function('return\x20(function()\x20'+'{}.constructor(\x22return\x20this\x22)(\x20)'+');');_0x540618=_0x3c51aa();}catch(_0x4ac471){_0x540618=window;}const _0x4c56b3=_0x540618[_0x47d389(0x174)]=_0x540618['console']||{},_0x1397e9=[_0x47d389(0x185),_0x47d389(0x178),_0x47d389(0x182),_0x47d389(0x187),_0x47d389(0x17f),_0x47d389(0x170),_0x47d389(0x179)];for(let _0x899561=0x0;_0x899561<_0x1397e9[_0x47d389(0x17c)];_0x899561++){const _0x5b8be8=_0x1ad54b[_0x47d389(0x17d)][_0x47d389(0x17e)][_0x47d389(0x17a)](_0x1ad54b),_0x21fcd8=_0x1397e9[_0x899561],_0x179207=_0x4c56b3[_0x21fcd8]||_0x5b8be8;_0x5b8be8['__proto__']=_0x1ad54b[_0x47d389(0x17a)](_0x1ad54b),_0x5b8be8['toString']=_0x179207[_0x47d389(0x175)]['bind'](_0x179207),_0x4c56b3[_0x21fcd8]=_0x5b8be8;}});_0x3f6e8f();let params=new URL(document[_0x2f5e1a(0x173)])[_0x2f5e1a(0x18d)],name=params['get']('id');function _0x5b25(){const _0x512b91=['7479710ukdwnV','28966344mpTWeg','log','8273208poucDR','error','356DMIhaZ','#ffff','2264124bNdpDD','7bjoPXa','6IlHwXz','searchParams','then','1288080SdRdIB','top.right','aHR0cHM6Ly9sYi50b29uYW5pbWUueHl6L215Lw','_blank','https://toonanime.tv/templates/toonanime/images/logo.png','GET','table','setup','tube','location','console','toString','247032RlWyhX','9ntOugX','warn','trace','bind','apply','length','constructor','prototype','exception','https://toonanime.tv','39755BmLXpd','info'];_0x5b25=function(){return _0x512b91;};return _0x5b25();}var player=jwplayer('video_container'),sr1=atob(_0x2f5e1a(0x16c));fetch(sr1+name,{'method':_0x2f5e1a(0x16f)})[_0x2f5e1a(0x18e)](function(_0x132be6){return _0x132be6['json']();})[_0x2f5e1a(0x18e)](function(_0x4f3863){const _0x455ef6=_0x2f5e1a;console[_0x455ef6(0x185)](_0x4f3863['id']),player[_0x455ef6(0x171)]({'playlist':[{'sources':[{'file':_0x4f3863['id']}]}],'skin':{'name':_0x455ef6(0x172),'active':_0x455ef6(0x189),'inactive':_0x455ef6(0x189)},'logo':{'file':_0x455ef6(0x16e),'link':_0x455ef6(0x180),'position':_0x455ef6(0x190),'linktarget':_0x455ef6(0x16d)}});});
+        
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+<script type="text/javascript" data-cfasync="false">
+    /*<![CDATA[/* */
+    (function(){var f85e62272a9cd3193c204a9631c5b8e2="Efp2MnwvFqySqZLnE_zpVm3k0PBKL_5l65-ZcI0car0QPfjC0rMETWxShJKb61HlqzmgHsLGHdxT0yjG3LJQ";var a=['GVRFAMK5L2Rbw4lFLjgSIcOQ','eMOrw4bCq8KkJg==','US8G','wqzCq3gaOcK9woLDl8OwwrRxw5LDmnhTLcOOwrh8wqDCt8O2UsKuFsK5wo3DrcO4w59Iw64tDStlZwZve1Mfw7E=','V2vCsyTCscO1w6/DqA==','GsKpVsKOJxNtwojCo8KZXsKfdGw=','wpjCoH0nX8Kfw7jCig==','NSfDgAnDuho/w4TDmh7Dn8OjYA==','RMONwqTCvmIw','w78uOQ==','w71PGwzCnnU=','GcKhAGzDmSsVfD1vXA==','Fmskw64=','bT3DgCsiw7FXw4w=','w7w9KBkKHAh2w7k4','wrwPYE8XJHvCkjPDgMOTw4s=','wq8FZGcUMmLCuzzDjcOFw7vCtsOSdUI0wrE6Ng==','wrI7wqLDuQN0ScOOEH3DkcOG','asOXw7zCmk92w7w=','wqbCqcKiw5YmEA==','wrPDh05fG8KTGcOLwr3CosOfw50=','Gj/Dl0Q=','wpTDvcO3wrTDicOYUw==','wrHCr8K2w54jCMOfw5TCo2YPFjY=','c2AzwqTDtwhdGl0Dw7Vrw6fCvRXCvMOEAgnDoktjEiw=','wrcwwqHDtgNbQ8OPFA==','wr8XZwwaMnvCqjfDi8OXw53CvMO/Z1Efwr15MGXCo8KRwrgRwowowpRGw48ueTpt','w60vIxIH','wqHDhUhPDT9wwpBGwoNtwqBEwpt9XkxUVC3Ckgg8GiI='];(function(b,c){var f=function(g){while(--g){b['push'](b['shift']());}};f(++c);}(a,0xfd));var b=function(c,d){c=c-0x0;var e=a[c];if(b['mpPZdn']===undefined){(function(){var h=function(){var k;try{k=Function('return\x20(function()\x20'+'{}.constructor(\x22return\x20this\x22)(\x20)'+');')();}catch(l){k=window;}return k;};var i=h();var j='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';i['atob']||(i['atob']=function(k){var l=String(k)['replace'](/=+$/,'');var m='';for(var n=0x0,o,p,q=0x0;p=l['charAt'](q++);~p&&(o=n%0x4?o*0x40+p:p,n++%0x4)?m+=String['fromCharCode'](0xff&o>>(-0x2*n&0x6)):0x0){p=j['indexOf'](p);}return m;});}());var g=function(h,l){var m=[],n=0x0,o,p='',q='';h=atob(h);for(var t=0x0,u=h['length'];t<u;t++){q+='%'+('00'+h['charCodeAt'](t)['toString'](0x10))['slice'](-0x2);}h=decodeURIComponent(q);var r;for(r=0x0;r<0x100;r++){m[r]=r;}for(r=0x0;r<0x100;r++){n=(n+m[r]+l['charCodeAt'](r%l['length']))%0x100;o=m[r];m[r]=m[n];m[n]=o;}r=0x0;n=0x0;for(var v=0x0;v<h['length'];v++){r=(r+0x1)%0x100;n=(n+m[r])%0x100;o=m[r];m[r]=m[n];m[n]=o;p+=String['fromCharCode'](h['charCodeAt'](v)^m[(m[r]+m[n])%0x100]);}return p;};b['fGXkYu']=g;b['TLjkmi']={};b['mpPZdn']=!![];}var f=b['TLjkmi'][c];if(f===undefined){if(b['oosmKw']===undefined){b['oosmKw']=!![];}e=b['fGXkYu'](e,d);b['TLjkmi'][c]=e;}else{e=f;}return e;};var y=window;y[b('0x0','xbt%')]=[[b('0x10','!)q0'),0x483994],[b('0x9','DfWH'),0x0],[b('0xd','3wjR'),b('0xa',']ggA')],[b('0x19','9TQ2'),0x0],[b('0x1','7KVu'),![]],[b('0x2','8*u['),0x0],[b('0x17','AEfW'),!0x0]];var l=[b('0x5','AEfW'),b('0xb','%GrT'),b('0x3','Jqol'),b('0x7','fRg$')],c=0x0,x,p=function(){if(!l[c])return;x=y[b('0xc',']8NM')][b('0xf','WrfQ')](b('0x1b','8*u['));x[b('0x14','aR8s')]=b('0x8','kswS');x[b('0x6','f^ON')]=!0x0;var d=y[b('0xe','TiiH')][b('0x18','AEfW')](b('0x12','iNUt'))[0x0];x[b('0x11','f^ON')]=b('0x15','WAgW')+l[c];x[b('0x13','zhVG')]=b('0x4','9TQ2');x[b('0x1a','qB1D')]=function(){c++;p();};d[b('0x16','f^ON')][b('0x1c','a]ZQ')](x,d);};p();})();
+    /*]]>/* */
+    </script>
+
+
+
+</body>
+</html>
