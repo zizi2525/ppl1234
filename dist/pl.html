@@ -138,7 +138,7 @@ function FirePlayer_jwplayer8(ID, videoSettings, AutoStart, jData, bShow, Seekin
 	if(videoSettings.hostList[videoSettings.videoServer]) {
 		videoServer = videoSettings.videoServer;
 		videoSources = [{
-			"file":"http://" + window.location.hostname + videoSettings.videoUrl + "?s=" + videoServer + "&d=" + btoa((videoSettings.videoDisk ? videoSettings.videoDisk : "")),
+			"file":"http://" +  videoSettings.videoUrl + "?s=" + videoServer + "&d=" + btoa((videoSettings.videoDisk ? videoSettings.videoDisk : "")),
 			"label":"HD",
 			"type":"hls"
 		}];
