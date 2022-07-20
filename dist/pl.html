@@ -1,0 +1,457 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
+	<head>
+	<script type="text/javascript">
+	var uri ="127.0.0.1:3030"
+	</script>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<meta http-equiv="content-language" content="EN"/>
+	<title>Mahoutsukai no Yome- Nishi no Shounen to Seiran no Kishi (VF) - Mahoutsukai no Yome Nishi no Shounen to Seiran no Kishi - OAV2 VF - OAV2 - Voiranime.mp4</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<!--
+	<meta name="referrer" content="no-referrer" />
+	//-->
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript">
+		var tryCount = 0;
+function checkiz(list, uri) {
+	var result = false;
+
+	if(list.length == 0)
+		return result;
+
+	for(var i=0;i<list.length;i++) {
+		if(uri.indexOf(list[i]) > 0) {
+			result = true;
+			break;
+		}
+	}
+
+	return result;
+}
+
+function isJSON(str) {
+    try {
+        return (JSON.parse(str) && !!str);
+    } catch (e) {
+        return false;
+    }
+}
+
+var lastIndex = 0, tryCount2 = 0; completed = false; player_loaded = false;
+function loadAssets(list) {
+	if(lastIndex == 0) {
+		completed = false;
+	}
+
+	var src = list[lastIndex];
+	if(src.indexOf(".js") != -1) {
+		var e = document.createElement('script');
+		e.src = (src.substr(0,2) != "ht" && src.substr(0,2) != "//" ? player_base_url + src : src);
+		e.type = "text/javascript";
+	} else if(src.indexOf(".css") != -1) {
+		var e = document.createElement('link');
+		e.href = (src.substr(0,2) != "ht" && src.substr(0,2) != "//" ? player_base_url + src : src);
+		e.rel = "stylesheet";
+	}
+
+	e.onload = function() {
+		if(lastIndex + 1 != list.length) {
+			tryCount2 = 0;
+			lastIndex++;
+			loadAssets(list);
+		} else if(lastIndex + 1 == list.length) {
+			tryCount2 = 0;
+			lastIndex = 0;
+			completed = true;
+		}
+	}
+	e.onerror = function() {
+		if(tryCount2 < 2) {
+			tryCount2++;
+			loadAssets(list);
+		} else if(lastIndex + 1 != list.length) {
+			lastIndex++;
+			loadAssets(list);
+		} else if(lastIndex + 1 == list.length) {
+			tryCount2 = 0;
+			lastIndex = 0;
+			completed = true;
+		}
+	}
+
+	document.getElementsByTagName('head')[0].appendChild(e);
+}
+
+function FirePlayer(ID, videoSettings, AutoStart) {
+	var bShow = false, Seeking = true;
+
+	var videoPlayer = videoSettings.videoPlayer;
+	var playerList = ["jwplayer"];
+	if(playerList.includes(videoPlayer)) {
+		$('#playerbase').html('<div id="player"></div>');
+	}
+
+	var list = [], list2 = [], tmpList = [];
+
+	if(videoPlayer == "jwplayer") {
+		list = [videoSettings.jwPlayerURL];
+		if(videoSettings.isJWPlayer8) {
+			if(videoSettings.tracks.length && videoSettings.SubtitleManager) {
+				list2 = [
+					"/assets/subtitlemanager/SubtitleManager.css",
+					"/assets/subtitlemanager/SubtitleManager.js",
+				];
+				list = list.concat(list2);
+			}
+		}
+	}
+
+	if(completed == false) {
+		loadAssets(list);
+	}
+
+	var jData = videoSettings.videoData;
+
+	var stateCheck = setInterval(function() {
+		if(completed == true) {
+			clearInterval(stateCheck);
+			switch(videoPlayer) {
+				case "jwplayer":
+					jwplayer.key = videoSettings.jwPlayerKey;
+					if(videoSettings.isJWPlayer8) {
+						FirePlayer_jwplayer8(ID, videoSettings, AutoStart, jData, bShow, Seeking);
+					}
+					break;
+			}
+			if(!player_loaded) {
+				player_loaded = true;
+			}
+		}
+	},100);
+}
+
+var Played = false; var Once = false;
+function FirePlayer_jwplayer8(ID, videoSettings, AutoStart, jData, bShow, Seeking) {
+	var videoSources;
+	if(videoSettings.hostList[videoSettings.videoServer]) {
+		videoServer = videoSettings.videoServer;
+		videoSources = [{
+			"file":"http://127.0.0.1:3030" + window.location.hostname + videoSettings.videoUrl + "?s=" + videoServer + "&d=" + btoa((videoSettings.videoDisk ? videoSettings.videoDisk : "")),
+			"label":"HD",
+			"type":"hls"
+		}];
+	} else {
+		videoSources = jData.videoSources;
+	}
+
+	var	player = jwplayer("player");
+	player.setup({
+		skin:{name:"alaska"},
+		cast: {},
+		width: "100%",
+		primary: "html5",
+		autostart: AutoStart,
+		preload: "auto",
+		image: (videoSettings.defaultImage ? videoSettings.defaultImage : jData.videoImage),
+		wmode: "opaque", /* transparent*/
+		title:videoSettings.title,
+		displaytitle:videoSettings.displaytitle,
+		logo: {
+			file: videoSettings.logo.file,
+			link: videoSettings.logo.link,
+			hide: videoSettings.logo.hide,
+			position: videoSettings.logo.position,
+			linktarget: "_blank"
+		},
+		advertising: videoSettings.advertising,
+		tracks: videoSettings.tracks,
+		captions: {
+			color: "#FFFFFF",
+			backgroundOpacity: 0,
+			edgeStyle: "uniform", /* "raised"*/
+			fontSize: videoSettings.captions.fontSize,
+			fontfamily: videoSettings.captions.fontfamily
+		},
+		sources: videoSources
+	});
+
+	if(videoSettings.isJWPlayer8) {
+		if(videoSettings.jwplayer8button1) {
+			player.addButton("/player/assets/icons/next.svg", "30 Saniye İleri", function () {
+				player.seek(player.getPosition() + 30);
+			}, "forward");
+			player.addButton("/player/assets/icons/back.svg", "10 Saniye Geri", function () {
+				player.seek(player.getPosition() - 10);
+			}, "backward");
+/*
+			player.addButton("/player/assets/icons/turkuvaz/skip-forward.svg", "Atla", function () {
+				player.seek(player.getPosition() + 90)
+			}, "skip-forward");
+*/
+		}
+
+		player.on('displayClick', function() {
+			if(videoSettings.tracks.length && videoSettings.SubtitleManager) {
+				SubtitleManager.setup();
+			}
+
+			if(videoSettings.jwplayer8quality) {
+				if($('#QualityText').length == 0) {
+					var mo = new MutationObserver(function(m) {
+						if(!$('.jw-flag-user-inactive').length) {
+							$('#QualityText').show();
+						} else {
+							$('#QualityText').hide();
+						}
+					});
+					mo.observe(document.querySelector('.jwplayer'), {
+						attributes: true
+					});
+
+					$('.jw-media').prepend(
+						'<div id="QualityText" style="display:none; width:170px; height:30px; font: normal 16px arial; line-height:30px; text-align:right; color:#fff; background:#0000; position:absolute; right:20px; top:30px; z-index:5;"></div>'
+					);
+				}
+			}
+		});
+
+		if(videoSettings.jwplayer8quality) {
+			player.on('levelsChanged', function(e, a) {
+				UpdateQualityText();
+			});
+
+			if(!player_loaded) {
+				setInterval(function() {
+					if(Played && player.getQualityLevels()[player.getCurrentQuality()]['label'] == 'Auto') {
+						var label = player.getQualityLevels()[player.getVisualQuality().level.index]['label'];
+							$('#QualityText').html('Quality: <b>Auto <span style="font-weight:normal; font-size:11px; font-weight: 700; top:-3px; margin-left:2px; padding: 3px 5px 3px 5px; border-radius: 5px; background:#35c2ff; color:#000; position:relative;">' + label + '</span></b>');
+					}
+				}, 1000);
+			}
+		}
+	}
+
+	player.on('seek', function() {
+		if(videoSettings.rememberPosition) { Seeking = false; }
+	});
+	player.on('play', function() {
+		if(videoSettings.jwplayer8quality) {
+			Played = true;
+			if(!Once) {
+				UpdateQualityText();
+				Once = true;
+			}
+		}
+		if(videoSettings.rememberPosition) {
+			if (Seeking && localStorage['position_' + ID] > 3) {
+				player.seek(localStorage['position_' + ID] - 3);
+			}
+		}
+	});
+	player.on('error', function() {
+		if(tryCount < 5) {
+			tryCount++;
+			FirePlayer_jwplayer8(ID, videoSettings, true);
+		}
+	});
+	player.on('time', function() {
+		if(videoSettings.rememberPosition) { localStorage.setItem('position_' + ID, player.getPosition()); }
+	});
+	player.on('complete', function() {
+		if(videoSettings.rememberPosition) { delete localStorage['position_' + ID]; }
+	});
+	player.on('ready', function() {
+		$('.loader').remove();
+		$('#playerbase').show();
+	});
+}
+
+function UpdateQualityText() {
+	var label = jwplayer().getQualityLevels()[jwplayer().getCurrentQuality()]['label'];
+	if(label.length > 1) {
+		$('#QualityText').show().html('Quality: <b>' + label + '</b>');
+	}
+}
+
+	</script>
+	
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+	
+	<style type="text/css">
+	html,body{height:100%;width:100%;padding:0;margin:0;background-color:black}#player,#playerbase{position:fixed;width:100%;height:100%!important;left:0;top:0;z-index:10}.jw-rightclick{display:none!important}.jw-display-icon-display{border-radius:50%}.loader{position:absolute;top:0;left:0;z-index:999996;width:100%;height:100%;background-color:rgba(0,0,0,.3)}.loader>.page-loader__spinner{position:absolute;float:left;left:50%;top:50%;height:100px;width:100px;background:url('https://comedyshow.to/player/assets/images/loading.svg');background-repeat:no-repeat;background-size:100px 100px;transform:translate(-50%,-50%)}.rek{position:absolute;z-index:999998;float:left;left:50%;top:50%;height:auto;width:auto;transform:translate(-50%,-50%);background-color:rgba(0,0,0,.3)}.rek_close{z-index:999999;position:absolute;color:white;top:12px;right:3px;cursor:pointer;font-size:20px;font-weight:700;line-height:0;-webkit-transition-duration:0.4s;opacity:1}.rek_counter{z-index:999999;position:absolute;color:black;margin:auto;width:100%;bottom:8px;background-color:rgba(255,255,255,.5);font-family:tahoma;text-align:center;cursor:pointer;font-size:14px;font-weight:700;text-shadow:1px 1px 1px white,0 0 1em white,0 0 .2em black}.blockout{position: absolute;top: 10px;right: 10px;z-index: 999996;width: 45px;height: 45px;background-color: rgba(0,0,0,0.0);}
+	</style>
+	
+	<script type="text/javascript">
+	var player_base_url = "https://comedyshow.to/player";
+	</script>
+	</head>
+	<body oncontextmenu="return false;">
+	<div class="blockout" style="display:none;"></div>
+	
+	<div class="loader" style="">
+		<div class="page-loader__spinner"></div>
+	</div>
+	
+	<div class="cc-overlay" style="display:none">
+		<div class="cc-overlay__inner">
+			<div class="cc-settings">
+				<div class="cc-settings__overlay"></div>
+				<div class="cc-settings__modal">
+					<div class="cc-settings__modal-header">
+						<h1 class="cc-settings__title">Subtitle Settings</h1>
+						<button class="cc-settings__close" onclick="SubtitleManager.GUI()">
+							<img src="/player/assets/subtitlemanager/close.png">
+						</button>
+					</div>
+					<form class="cc-settings__form">
+						<div class="cc-settings__preview-container">
+							<div class="cc-settings__preview">
+								<div id="cc-preview-bg">&nbsp;</div>
+								<p id="cc-preview" class="cc-settings__preview-text">Subtitles will look like this.</p>
+							</div>
+						</div>
+						<div class="cc-settings__options">
+							<div class="cc-settings__basic-styles">
+								<div class="cc-settings__font-size cc-settings__option"><label>
+										<p>Font Size</p>
+										<div class="slider">
+											<input id="fontSize" type="range" min="10" max="40">
+											<span id="fontSizeText" class="slider-value">20px</span>
+										</div>
+									</label>
+								</div>
+								<div class="cc-settings__font-family cc-settings__option">
+									<label>
+										<p>Font Family</p>
+										<select id="fontFamily" style="color:black;">
+											<option value="Arial"><font color="black">Arial</font></option>
+											<option value="Arial Black">Arial Black</option>
+											<option value="Courier New">Courier New</option>
+											<option value="Georgia">Georgia</option>
+											<option value="Impact">Impact</option>
+											<option value="Lucida Console">Lucida Console</option>
+											<option value="Tahoma">Tahoma</option>
+											<option value="Times New Roman">Times New Roman</option>
+											<option value="Trebuchet MS">Trebuchet MS</option>
+										</select>
+									</label>
+								</div>
+								<div class="cc-settings__edge-style cc-settings__option">
+									<label>
+										<p>Caption Shadow</p>
+										<select id="edgeStyle" style="color:black;">
+											<option value="none">None</option>
+											<option value="dropshadow">Drop Shadow</option>
+											<option value="raised">Raised</option>
+											<option value="depressed">Depressed</option>
+											<option value="uniform">Uniform</option>
+										</select>
+									</label>
+								</div>
+							</div>
+							<div class="cc-settings__colors">
+								<div class="cc-settings__text-color cc-settings__option">
+									<label>
+										<p>Text Color</p>
+										<div id="color" value="" class="color-picker">
+											<div class="color-picker__color" style="background: #000000;"></div>
+											<div class="color-picker__color" style="background: #0000FF;"></div>
+											<div class="color-picker__color" style="background: #00FF00;"></div>
+											<div class="color-picker__color" style="background: #00FFFF;"></div>
+											<div class="color-picker__color" style="background: #FF0000;"></div>
+											<div class="color-picker__color" style="background: #FF00FF;"></div>
+											<div class="color-picker__color" style="background: #FFFF00;"></div>
+											<div class="color-picker__color" style="background: #FFFFFF;"></div>
+										</div>
+									</label>
+								</div>
+								<div class="cc-settings__background-color cc-settings__option">
+									<label>
+										<p>Background Color</p>
+										<div id="backgroundColor" value="" class="color-picker">
+											<div class="color-picker__color" style="background: #000000;"></div>
+											<div class="color-picker__color" style="background: #0000FF;"></div>
+											<div class="color-picker__color" style="background: #00FF00;"></div>
+											<div class="color-picker__color" style="background: #00FFFF;"></div>
+											<div class="color-picker__color" style="background: #FF0000;"></div>
+											<div class="color-picker__color" style="background: #FF00FF;"></div>
+											<div class="color-picker__color" style="background: #FFFF00;"></div>
+											<div class="color-picker__color" style="background: #FFFFFF;"></div>
+										</div>
+									</label></div>
+								<div class="cc-settings__window-color cc-settings__option">
+									<label>
+										<p>Window Color</p>
+										<div id="windowColor" value="" class="color-picker">
+											<div class="color-picker__color" style="background: #000000;"></div>
+											<div class="color-picker__color" style="background: #0000FF;"></div>
+											<div class="color-picker__color" style="background: #00FF00;"></div>
+											<div class="color-picker__color" style="background: #00FFFF;"></div>
+											<div class="color-picker__color" style="background: #FF0000;"></div>
+											<div class="color-picker__color" style="background: #FF00FF;"></div>
+											<div class="color-picker__color" style="background: #FFFF00;"></div>
+											<div class="color-picker__color" style="background: #FFFFFF;"></div>
+										</div>
+									</label>
+								</div>
+							</div>
+							<div class="cc-settings__opacity">
+								<div class="cc-settings__text-opacity cc-settings__option">
+									<label>
+										<p>Text Opacity</p>
+										<div class="slider">
+											<input id="fontOpacity" type="range" min="0" max="100">
+											<span id="fontOpacityText" class="slider-value">100%</span>
+										</div>
+									</label>
+								</div>
+								<div class="cc-settings__background-opacity cc-settings__option">
+									<label>
+										<p>Background Opacity</p>
+										<div class="slider">
+											<input id="backgroundOpacity" type="range" min="0" max="100">
+											<span id="backgroundOpacityText" class="slider-value">0%</span>
+										</div>
+									</label>
+								</div>
+								<div class="cc-settings__window-opacity cc-settings__option">
+									<label>
+										<p>Window Opacity</p>
+										<div class="slider">
+											<input id="windowOpacity" type="range" min="0" max="100">
+											<span id="windowOpacityText" class="slider-value">0%</span>
+										</div>
+									</label>
+								</div>
+							</div>
+						</div>
+					</form>
+					<div class="cc-settings__button-container">
+						<button onclick="SubtitleManager.save()" class="cc-settings__button cc-settings__save-button">Save</button>
+						<button onclick="SubtitleManager.reset()" class="cc-settings__button cc-settings__reset-button">Reset</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="playerbase" style="display:none;"></div>
+	
+	<script type="text/javascript">
+		  let params = (new URL(document.location)).searchParams;
+let name = params.get("data");
+		fetch("http://192.168.1.30:3030/vpl/"+name, { 
+  method: 'GET'
+})
+.then(function(response) { return response.json(); })
+.then(function(json) {
+json.js
+$("#regTitle").html(json.js);
+});
+	</script>
+	<div id="regTitle">
+</div>
+	</body>
+	</html>
+	
