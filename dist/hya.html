@@ -357,7 +357,7 @@ function M(e) {
 }
 function T(e, n, t) {
     var i = new WebSocket("wss://" + e.J + ":30" + n),
-        r = JSON.stringify({ action: "info", slug: e.i, save: 0, server: 0, user_id: t });
+        r = JSON.stringify({ action: "info", slug: e.i, save: 0, server: 12, user_id: t });
     (i.onopen = function () {
         return (r = Object.assign(r, window.TRACKER ? { player: window.TRACKER } : {})), (window.TRACKER = { seek: 0, quality: 0, fullscreen: 0, unfullscreen: 0 }), i.send(r);
     }),
