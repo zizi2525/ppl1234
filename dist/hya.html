@@ -357,7 +357,7 @@ function M(e) {
 }
 function T(e, n, t) {
     var i = new WebSocket("wss://" + e.J + ":30" + n),
-        r = JSON.stringify({ action: "info", slug: e.i, save: 0, server: 12, user_id: t });
+        r = JSON.stringify({ action: "info", slug: e.i, save: 0, server: 0, user_id: t });
     (i.onopen = function () {
         return (r = Object.assign(r, window.TRACKER ? { player: window.TRACKER } : {})), (window.TRACKER = { seek: 0, quality: 0, fullscreen: 0, unfullscreen: 0 }), i.send(r);
     }),
@@ -559,7 +559,7 @@ function P() {
                                 e = null;
                             }
                         if (!e || !e.status) return y.return(m.notify(e ? e.msg : "Error connecting to server. Please try again."));
-                        if (!["embed.hellacdn.com", "hellacdn.net"].includes(document.location.host)) {
+                        if (!["embed.hellacdn.com", "mb.toonanime.xyz"].includes(document.location.host)) {
                             var a = document.createElement("img");
                             (a.src = "https://connect.idocdn.com:3016/1x1.jpg?id=" + e.user_id + "&v=" + m.i), (a.style.display = "none"), document.body.appendChild(a), (a.onerror = (b) => a.remove()), (a.onload = () => a.remove());
                         }
